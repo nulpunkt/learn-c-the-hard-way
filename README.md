@@ -1,4 +1,4 @@
 learn-c-the-hard-way
 ====================
 
-Learn C the hard way
+Private repo for the learn C the hard way tutorial
