@@ -14,12 +14,17 @@ void die(const char *msg) {
 }
 
 typedef int (*compare_ints)(int a, int b);
+typedef void (*sort_ints)(int *numbers, compare_ints cmp);
 
 int length_of_int_array (int *array) {
 	return array[-1];
 }
 
-int bubble_sort(int *numbers, compare_ints cmp) {
+void gsort(int *numbers, sort_ints sorter, compare_ints cmp) {
+	sorter(numbers, cmp);
+}
+
+void bubble_sort(int *numbers, compare_ints cmp) {
 	int temp = 0, i = 0, j = 0, n = length_of_int_array(numbers);
 
 	for (i = 0; i < n-1; i++) {
@@ -31,8 +36,6 @@ int bubble_sort(int *numbers, compare_ints cmp) {
 			}
 		}
 	}
-
-	return length_of_int_array(numbers);
 }
 
 void print_int_array(int *numbers) {
@@ -65,15 +68,6 @@ int *random_int_array(int size) {
 	return numbers;
 }
 
-void print_sorter(compare_ints cmp) {
-	unsigned char *data = (unsigned char *)cmp;
-	int i = 0;
-	for (i = 0; i < 25; i++) {
-		printf("%02x:", data[i]);
-	}
-	puts("\n");
-}
-
 int main (int argc, char *argv[]) {
 	int *numbers = random_int_array(10);
 	
@@ -81,15 +75,13 @@ int main (int argc, char *argv[]) {
 
 	printf("=====================\n");
 
-	bubble_sort(numbers, int_natural_order);
+	gsort(numbers, bubble_sort, int_natural_order);
 	print_int_array(numbers);
 
 	printf("=====================\n");
 
-	bubble_sort(numbers, int_reverse_order);
+	gsort(numbers, bubble_sort, int_reverse_order);
 	print_int_array(numbers);
-
-	print_sorter(int_natural_order);
 
 	return 0;
 }
